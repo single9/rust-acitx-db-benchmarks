@@ -1,0 +1,23 @@
+[workspace]
+
+members = [
+  "apps/calculator",
+  "apps/api",
+  "libs/logger",
+  "libs/database"
+]
+
+[workspace.package]
+version = "0.0.0"
+edition = "2021"
+authors = ["Duye Chen <k078264@gmail.com>"]
+description = "A demo"
+readme = "./README.md"
+license = "MIT OR Apache-2.0"
+
+[workspace.dependencies]
+tokio = { version = "1", features = ["full"] }
+env_logger = "0.9.3"
+log = "0.4.17"
+dotenv = "0.15"
+anyhow = "1.0"
