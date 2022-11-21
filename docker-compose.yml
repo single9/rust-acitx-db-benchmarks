@@ -7,10 +7,25 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres
     volumes:
-      - ./db:/var/lib/postgresql/data
+      - database:/var/lib/postgresql/data
 
   adminer:
     image: adminer
     restart: always
     ports:
       - 8888:8080
+
+  server:
+    image: test-rust-api
+    build:
+      context: .
+    ports:
+      - 3000:3000
+    environment:
+      - LOG_LEVEL=debug
+      - DATABASE_HOST=db
+    links:
+      - db
+
+volumes:
+  database:

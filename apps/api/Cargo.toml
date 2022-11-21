@@ -12,3 +12,5 @@ actix-web = "4"
 tokio = { workspace = true }
 logger = { path = "../../libs/logger" }
 database = { path = "../../libs/database" }
+anyhow = { workspace = true }
+dotenv = { workspace = true }

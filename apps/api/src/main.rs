@@ -1,54 +1,45 @@
 mod calculator;
 mod db_service;
+mod test_api;
 
 use actix_web::middleware::Logger;
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{web, App, HttpServer};
+use dotenv::dotenv;
+use std::env;
+
+use database::DatabaseConnection;
+use logger::log::info;
 
 use crate::db_service::DatabaseService;
 
-#[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("Hello world!")
-}
-
-#[get("/db")]
-async fn db(db_service: web::Data<DatabaseService>) -> impl Responder {
-    let row: (i64,) = database::sqlx::query_as("SELECT $1")
-        .bind(150_i64)
-        .fetch_one(db_service.pool.as_ref())
-        .await
-        .unwrap();
-
-    HttpResponse::Ok().body(format!("Hello {}", row.0))
-}
-
-#[post("/echo")]
-async fn echo(req_body: String) -> impl Responder {
-    HttpResponse::Ok().body(req_body)
-}
-
-async fn manual_hello() -> impl Responder {
-    HttpResponse::Ok().body("Hey there!")
-}
-
 #[tokio::main]
-async fn main() -> std::io::Result<()> {
+async fn main() -> anyhow::Result<()> {
+    dotenv().ok();
+
     logger::init();
 
-    let pool = database::connect().await.unwrap();
+    let port = env::var("PORT")
+        .unwrap_or("3000".to_string())
+        .parse::<u16>()
+        .unwrap();
+    let pool = DatabaseConnection::new().connect().await?;
     let db_service = DatabaseService::new(pool);
+
+    info!("Server started at http://127.0.0.1:{port}");
 
     HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(db_service.clone()))
             .wrap(Logger::default())
             .wrap(Logger::new("%a %{User-Agent}i"))
-            .service(hello)
-            .service(echo)
-            .service(db)
-            .route("/hey", web::get().to(manual_hello))
+            .service(
+                web::scope("/api")
+                    .service(test_api::init())
+                    .service(calculator::init()),
+            )
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind(("0.0.0.0", port))?
     .run()
     .await
+    .map_err(anyhow::Error::from)
 }

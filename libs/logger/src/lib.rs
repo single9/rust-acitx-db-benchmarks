@@ -8,7 +8,7 @@ pub fn init() {
 
     env_logger::init_from_env(env);
 
-    log::debug!(
+    log::info!(
         "logger initialized. Level: {}",
         env::var("LOG_LEVEL").unwrap()
     );
