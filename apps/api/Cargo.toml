@@ -14,3 +14,5 @@ logger = { path = "../../libs/logger" }
 database = { path = "../../libs/database" }
 anyhow = { workspace = true }
 dotenv = { workspace = true }
+sqlx = { workspace = true }
+serde = { workspace = true }

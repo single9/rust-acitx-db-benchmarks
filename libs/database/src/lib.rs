@@ -1,4 +1,3 @@
-extern crate dotenv;
 pub extern crate sqlx;
 
 use dotenv::dotenv;
@@ -35,7 +34,7 @@ impl DatabaseConnection {
                 .unwrap(),
             database_username: env::var("DATABASE_USERNAME").unwrap_or("postgres".to_string()),
             database_password: env::var("DATABASE_PASSWORD").unwrap_or("postgres".to_string()),
-            database_dbname: env::var("DATABASE_DBNAME").unwrap_or("postgres".to_string()),
+            database_dbname: env::var("DATABASE_DBNAME").unwrap_or("todo".to_string()),
             app_name: "rust-sqlx".to_string(),
         }
     }

@@ -1,6 +1,7 @@
 mod calculator;
 mod db_service;
 mod test_api;
+mod todo;
 
 use actix_web::middleware::Logger;
 use actix_web::{web, App, HttpServer};
@@ -23,7 +24,7 @@ async fn main() -> anyhow::Result<()> {
         .parse::<u16>()
         .unwrap();
     let pool = DatabaseConnection::new().connect().await?;
-    let db_service = DatabaseService::new(pool);
+    let db_service = DatabaseService::new(&pool);
 
     info!("Server started at http://127.0.0.1:{port}");
 
@@ -35,7 +36,8 @@ async fn main() -> anyhow::Result<()> {
             .service(
                 web::scope("/api")
                     .service(test_api::init())
-                    .service(calculator::init()),
+                    .service(calculator::init())
+                    .service(todo::init()),
             )
     })
     .bind(("0.0.0.0", port))?
