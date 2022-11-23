@@ -593,11 +593,13 @@ name = "database_service"
 version = "0.0.0"
 dependencies = [
  "anyhow",
+ "chrono",
  "database",
  "logger",
  "serde",
  "sqlx",
  "tokio",
+ "uuid",
 ]
 
 [[package]]

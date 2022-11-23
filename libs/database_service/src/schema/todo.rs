@@ -1,14 +1,12 @@
+use serde::{Deserialize, Serialize};
 use sqlx::{
-    types::{
-        chrono::{DateTime, Utc},
-        Uuid,
-    },
+    types::chrono::{DateTime, Utc},
     FromRow,
 };
 
-#[derive(Debug, FromRow)]
+#[derive(Serialize, Deserialize, Debug, FromRow)]
 pub struct Todo {
-    pub id: Uuid,
+    pub id: uuid::Uuid,
     pub title: String,
     pub checked: bool,
     pub create_time: DateTime<Utc>,

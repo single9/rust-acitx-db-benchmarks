@@ -1,8 +1,6 @@
-use serde::Deserialize;
-use sqlx::{types::Uuid, PgPool};
-use std::str::FromStr;
-
 use crate::{schema::todo::Todo, BuildDatabaseService};
+use serde::Deserialize;
+use sqlx::PgPool;
 
 #[derive(Debug, Deserialize)]
 pub struct ListOptions {
@@ -55,10 +53,9 @@ impl TodoService {
         Ok(result)
     }
 
-    pub async fn get(&self, id: &str) -> Result<Todo, sqlx::Error> {
-        let id = Uuid::from_str(id).unwrap();
-        let result = sqlx::query_as::<_, Todo>("SELECT * FROM todo WHERE id = $1 LIMIT 1")
-            .bind(id)
+    pub async fn get(&self, title: &str) -> Result<Todo, sqlx::Error> {
+        let result = sqlx::query_as::<_, Todo>("SELECT * FROM todo WHERE title = $1 LIMIT 1")
+            .bind(title)
             .fetch_one(self.pool.as_ref())
             .await?;
 

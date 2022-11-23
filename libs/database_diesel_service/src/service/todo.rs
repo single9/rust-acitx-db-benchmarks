@@ -1,5 +1,3 @@
-use std::str::FromStr;
-
 use crate::{
     models::todo::{NewTodo, Todo},
     BuildDatabaseService,
@@ -60,13 +58,14 @@ impl TodoService {
             .get_result(&mut conn)
     }
 
-    pub async fn get(&self, todo_id: &str) -> Result<Todo, diesel::result::Error> {
+    pub async fn get(&self, todo_title: &str) -> Result<Todo, diesel::result::Error> {
         use crate::schema::todo::dsl::*;
 
-        let query_id = uuid::Uuid::from_str(todo_id).unwrap();
         let mut conn = self.pool.get().unwrap();
 
-        todo.find(query_id).first::<Todo>(&mut conn)
+        todo.filter(title.eq(todo_title.to_string()))
+            .limit(1)
+            .first::<Todo>(&mut conn)
     }
 
     pub async fn list<T>(&self, opts: T) -> Result<Vec<Todo>, diesel::result::Error>
@@ -81,7 +80,6 @@ impl TodoService {
         let mut conn = self.pool.get().unwrap();
 
         todo.select((id, title, checked, create_time, modify_time))
-            .order(create_time)
             .limit(limit)
             .offset(offset)
             .load::<Todo>(&mut conn)
