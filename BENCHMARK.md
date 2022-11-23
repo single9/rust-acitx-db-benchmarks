@@ -15,6 +15,38 @@
 - Rust 1.65.0
 - PostgreSQL 14 Alpine (Official Image)
 
+## Hello World
+
+### actix-web
+
+```
+  execution: local
+     script: benchmark/hello_world.js
+     output: -
+
+  scenarios: (100.00%) 1 scenario, 1000 max VUs, 10m30s max duration (incl. graceful stop):
+           * default: 100000 iterations shared among 1000 VUs (maxDuration: 10m0s, gracefulStop: 30s)
+
+
+running (00m00.5s), 0000/1000 VUs, 100000 complete and 0 interrupted iterations
+default ✓ [======================================] 1000 VUs  00m00.5s/10m0s  100000/100000 shared iters
+
+     data_received..................: 8.7 MB 17 MB/s
+     data_sent......................: 13 MB  25 MB/s
+     http_req_blocked...............: avg=186.76µs min=203ns   med=827ns  max=94.32ms p(90)=2.01µs  p(95)=2.59µs
+     http_req_connecting............: avg=180.62µs min=0s      med=0s     max=94.3ms  p(90)=0s      p(95)=0s
+     http_req_duration..............: avg=2.55ms   min=20.42µs med=1.65ms max=92.6ms  p(90)=5.32ms  p(95)=7.73ms
+       { expected_response:true }...: avg=2.55ms   min=20.42µs med=1.65ms max=92.6ms  p(90)=5.32ms  p(95)=7.73ms
+     http_req_failed................: 0.00%  ✓ 0             ✗ 100000
+     http_req_receiving.............: avg=67.7µs   min=2.45µs  med=8.24µs max=39.68ms p(90)=15.14µs p(95)=32.54µs
+     http_req_sending...............: avg=42.39µs  min=1.2µs   med=3.71µs max=37.73ms p(90)=7.71µs  p(95)=24.7µs
+     http_req_tls_handshaking.......: avg=0s       min=0s      med=0s     max=0s      p(90)=0s      p(95)=0s
+     http_req_waiting...............: avg=2.44ms   min=13.58µs med=1.61ms max=92.59ms p(90)=5.17ms  p(95)=7.19ms
+     http_reqs......................: 100000 191135.070929/s
+     iteration_duration.............: avg=3.77ms   min=32.36µs med=2.34ms max=99.8ms  p(90)=7.62ms  p(95)=12.59ms
+     iterations.....................: 100000 191135.070929/s
+```
+
 ## Create Todo
 
     k6 run --vus 1000 --iterations 100000 benchmark/create_todo.js
