@@ -1,7 +1,8 @@
+pub mod models;
 pub mod schema;
 pub mod service;
 
-use sqlx::PgPool;
+use database_diesel::PgPool;
 
 use self::service::todo::TodoService;
 

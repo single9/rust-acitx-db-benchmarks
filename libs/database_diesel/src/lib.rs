@@ -1,11 +1,11 @@
-pub extern crate sqlx;
-
-use dotenv::dotenv;
-use sqlx::{
-    postgres::{PgConnectOptions, PgPoolOptions},
-    PgPool,
+use diesel::{
+    r2d2::{ConnectionManager, Pool},
+    PgConnection,
 };
+use dotenv::dotenv;
 use std::env;
+
+pub type PgPool = Pool<ConnectionManager<PgConnection>>;
 
 pub struct DatabaseConnection {
     app_name: String,
@@ -54,23 +54,22 @@ impl DatabaseConnection {
     /// Set database connection's application_name
     /// ```
     /// let db = DatabaseConnection::new()
-    ///     .connect()
-    ///     .await?;
+    ///     .connect();
     /// ```
-    pub async fn connect(&self) -> Result<PgPool, sqlx::Error> {
-        let option = PgConnectOptions::new()
-            .host(&self.database_host)
-            .port(self.database_port)
-            .username(&self.database_username)
-            .password(&self.database_password)
-            .database(&self.database_dbname)
-            .application_name(&self.app_name);
-
-        let pool = PgPoolOptions::new()
-            .max_connections(6)
-            .connect_with(option)
-            .await?;
-
-        Ok(pool)
+    pub fn connect(&self) -> PgPool {
+        let database_url = format!(
+            "postgres://{}:{}@{}:{}/{}?application_name=rust-diesel",
+            self.database_username,
+            self.database_password,
+            self.database_host,
+            self.database_port,
+            self.database_dbname
+        );
+        let manager = ConnectionManager::<PgConnection>::new(&database_url);
+        // Create connection pool
+        Pool::builder()
+            .max_size(5)
+            .build(manager)
+            .expect("Failed to create pool.")
     }
 }

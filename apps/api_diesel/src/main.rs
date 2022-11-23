@@ -8,7 +8,7 @@ use actix_web::{web, App, HttpServer};
 use dotenv::dotenv;
 use std::env;
 
-use database::DatabaseConnection;
+use database_diesel::DatabaseConnection;
 use logger::log::info;
 
 use crate::db_service::DatabaseService;
@@ -23,7 +23,7 @@ async fn main() -> anyhow::Result<()> {
         .unwrap_or("3000".to_string())
         .parse::<u16>()
         .unwrap();
-    let pool = DatabaseConnection::new().connect().await?;
+    let pool = DatabaseConnection::new().connect();
     let db_service = DatabaseService::new(&pool);
 
     info!("Server started at http://127.0.0.1:{port}");

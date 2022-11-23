@@ -3,8 +3,10 @@
 members = [
   "apps/calculator",
   "apps/api",
+  "apps/api_diesel",
   "libs/logger",
-  "libs/database"
+  "libs/database",
+  "libs/database_diesel"
 ]
 
 [workspace.package]
@@ -16,6 +18,7 @@ readme = "./README.md"
 license = "MIT OR Apache-2.0"
 
 [workspace.dependencies]
+diesel = { version = "2.0", features = ["postgres", "r2d2", "uuid", "chrono"] }
 sqlx = { version = "0.6", features = ["postgres", "runtime-tokio-native-tls", "chrono", "uuid", "offline", "time", "json"] }
 tokio = { version = "1", features = ["full"] }
 serde = { version = "1", features = ["derive"] }
@@ -23,3 +26,5 @@ env_logger = "0.9.3"
 log = "0.4.17"
 dotenv = "0.15"
 anyhow = "1.0"
+uuid = { version = "1.2", features = ["v4", "fast-rng", "macro-diagnostics", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }

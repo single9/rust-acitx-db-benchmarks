@@ -1,6 +1,6 @@
 use serde::Deserialize;
 use sqlx::{types::Uuid, PgPool};
-use std::{str::FromStr, sync::Arc};
+use std::str::FromStr;
 
 use crate::db_service::{schema::todo::Todo, BuildDatabaseService};
 
@@ -19,25 +19,39 @@ impl Default for ListOptions {
     }
 }
 
+impl ListOptions {
+    pub fn set_from_obj(obj: ListOptions) -> Self {
+        Self {
+            page: Some(obj.page.unwrap_or(0)),
+            per_page: Some(obj.per_page.unwrap_or(10)),
+        }
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct TodoService {
-    pub pool: Arc<PgPool>,
+    pub pool: Box<PgPool>,
 }
 
 impl BuildDatabaseService for TodoService {
     fn new(pool: &PgPool) -> Self {
         Self {
-            pool: Arc::new(pool.clone()),
+            pool: Box::new(pool.clone()),
         }
     }
 }
 
 impl TodoService {
     pub async fn create(&self, title: &str) -> Result<Todo, sqlx::Error> {
-        let result = sqlx::query_as::<_, Todo>("INSERT INTO todo (title) VALUES ($1) RETURNING *")
-            .bind(title)
-            .fetch_one(self.pool.as_ref())
-            .await?;
+        let result = sqlx::query_as!(
+            Todo,
+            r"
+            INSERT INTO todo (title) VALUES ($1) RETURNING *
+            ",
+            title
+        )
+        .fetch_one(self.pool.as_ref())
+        .await?;
         Ok(result)
     }
 
@@ -56,7 +70,7 @@ impl TodoService {
         T: Into<Option<ListOptions>>,
     {
         let opts: ListOptions = opts.into().unwrap_or(ListOptions::default());
-        let offset = opts.page.unwrap_or(0) * opts.per_page.unwrap_or(10);
+        let offset = opts.page.unwrap() * opts.per_page.unwrap();
         let result = sqlx::query_as::<_, Todo>("SELECT * FROM todo LIMIT $1 OFFSET $2")
             .bind(opts.per_page)
             .bind(offset)

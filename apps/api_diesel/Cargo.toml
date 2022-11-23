@@ -1,0 +1,20 @@
+[package]
+name = "api_diesel"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix-web = "4"
+logger = { path = "../../libs/logger" }
+database_diesel = {path = "../../libs/database_diesel" }
+tokio = { workspace = true }
+anyhow = { workspace = true }
+dotenv = { workspace = true }
+serde = { workspace = true }
+diesel = { workspace = true }
+uuid = { workspace = true }
+chrono = { workspace = true }

@@ -1,41 +1,25 @@
-# Rust App Template
+# Rust Pratice 1
 
 ## Usage
 
-1. Clone the project
-2. Call the script to initialize your module, such as lib or app
+### Database
 
-Create the app with *name*
-```sh
-make new.app name=<NAME>
+.env
+
+```
+DATABASE_URL=postgres://postgres:postgres@localhost/todo
 ```
 
-Create the lib with *name*
-```sh
-make new.lib name=<NAME>
-```
+    sqlx database create
+    sqlx migrate run
 
-Test the specified sub project with *name*
-```sh
-make test name=<NAME>
-```
+### App
 
-Clean the project
-```sh
-make clean
-```
+    cargo run --bin api
+    # cargo run --bin api_diesel
 
-Build the whole workspace
-```sh
-make build
-```
+## Benchmark
 
-Release the application
-```sh
-make release name=<NAME>
-```
+Using [k6](https://github.com/grafana/k6).
 
-Launch
-```sh
-make launch
-```
+    k6 run --vus 100 --iterations 10000 benchmark.js
