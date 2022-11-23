@@ -19,7 +19,7 @@
 
     k6 run --vus 1000 --iterations 100000 benchmark/create_todo.js
 
-### web-actix + diesel
+### actix-web + diesel
 
 ```
   execution: local
@@ -51,7 +51,7 @@ default ✓ [======================================] 1000 VUs  00m06.8s/10m0s  1
      vus_max........................: 1000   min=1000       max=1000
 ```
 
-### web-actix + sqlx
+### actix-web + sqlx
 
 ```
   execution: local
@@ -87,7 +87,7 @@ default ✓ [======================================] 1000 VUs  00m06.8s/10m0s  1
 
     k6 run --vus 1000 --iterations 100000 benchmark/get_todo_list.js
 
-### web-actix + diesel
+### actix-web + diesel
 
 ```
   execution: local
@@ -119,7 +119,7 @@ default ✓ [======================================] 1000 VUs  00m02.8s/10m0s  1
      vus_max........................: 1000   min=1000       max=1000
 ```
 
-### web-actix + sqlx
+### actix-web + sqlx
 
 ```
   execution: local
@@ -155,7 +155,7 @@ default ✓ [======================================] 1000 VUs  00m07.0s/10m0s  1
 
     k6 run --vus 1000 --iterations 100000 benchmark/get_todo.js
 
-### web-actix + diesel
+### actix-web + diesel
 
 ```
   execution: local
@@ -187,7 +187,7 @@ default ✓ [======================================] 1000 VUs  00m01.7s/10m0s  1
      vus_max........................: 1000   min=1000       max=1000
 ```
 
-### web-actix + sqlx
+### actix-web + sqlx
 
 ```
   execution: local

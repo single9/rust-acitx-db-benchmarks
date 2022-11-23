@@ -1,4 +1,3 @@
-mod calculator;
 mod test_api;
 mod todo;
 
@@ -34,7 +33,6 @@ async fn main() -> anyhow::Result<()> {
             .service(
                 web::scope("/api")
                     .service(test_api::init())
-                    .service(calculator::init())
                     .service(todo::init()),
             )
     })

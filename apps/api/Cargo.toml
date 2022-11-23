@@ -8,11 +8,11 @@ license.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-actix-web = "4"
-tokio = { workspace = true }
 logger = { path = "../../libs/logger" }
 database = { path = "../../libs/database" }
 database_service = { path = "../../libs/database_service" }
+tokio = { workspace = true }
+actix-web = { workspace = true }
 anyhow = { workspace = true }
 dotenv = { workspace = true }
 sqlx = { workspace = true }

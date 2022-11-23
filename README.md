@@ -1,10 +1,14 @@
 # Rust Pratice 1
 
-## Prerequirements
+## Installation
 
 ### Ubuntu
 
     sudo apt-get install libpq-dev
+
+### Build
+
+    cargo build --release
 
 ## Usage
 
@@ -19,10 +23,13 @@ DATABASE_URL=postgres://postgres:postgres@localhost/todo
     sqlx database create
     sqlx migrate run
 
-### App
+### Run API Server
 
-    cargo run --bin api
-    # cargo run --bin api_diesel
+    # Actix-web + sqlx
+    cargo run --release --bin api
+
+    # Actix-web + diesel
+    cargo run --release --bin api_diesel
 
 ## Benchmark
 

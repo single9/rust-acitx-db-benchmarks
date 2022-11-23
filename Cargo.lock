@@ -365,15 +365,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "calculator"
-version = "0.0.0"
-dependencies = [
- "database",
- "logger",
- "tokio",
-]
-
-[[package]]
 name = "cc"
 version = "1.0.76"
 source = "registry+https://github.com/rust-lang/crates.io-index"
