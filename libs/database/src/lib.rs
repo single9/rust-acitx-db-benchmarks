@@ -14,6 +14,7 @@ pub struct DatabaseConnection {
     database_username: String,
     database_password: String,
     database_dbname: String,
+    database_pool_max: u32,
 }
 
 impl DatabaseConnection {
@@ -35,6 +36,10 @@ impl DatabaseConnection {
             database_username: env::var("DATABASE_USERNAME").unwrap_or("postgres".to_string()),
             database_password: env::var("DATABASE_PASSWORD").unwrap_or("postgres".to_string()),
             database_dbname: env::var("DATABASE_DBNAME").unwrap_or("todo".to_string()),
+            database_pool_max: env::var("DATABASE_POOL_MAX")
+                .unwrap_or("10".to_string())
+                .parse::<u32>()
+                .unwrap(),
             app_name: "rust-sqlx".to_string(),
         }
     }
@@ -67,7 +72,8 @@ impl DatabaseConnection {
             .application_name(&self.app_name);
 
         let pool = PgPoolOptions::new()
-            .max_connections(6)
+            .min_connections(1)
+            .max_connections(self.database_pool_max)
             .connect_with(option)
             .await?;
 
