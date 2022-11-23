@@ -28,4 +28,6 @@ DATABASE_URL=postgres://postgres:postgres@localhost/todo
 
 Using [k6](https://github.com/grafana/k6).
 
-    k6 run --vus 100 --iterations 10000 benchmark.js
+    k6 run --vus 100 --iterations 10000 benchmark/create_todo.js
+    k6 run --vus 100 --iterations 10000 benchmark/get_todo_list.js
+    k6 run --vus 100 --iterations 10000 benchmark/get_todo.js
