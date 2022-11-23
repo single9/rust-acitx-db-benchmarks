@@ -2,7 +2,7 @@ use serde::Deserialize;
 use sqlx::{types::Uuid, PgPool};
 use std::str::FromStr;
 
-use crate::db_service::{schema::todo::Todo, BuildDatabaseService};
+use crate::{schema::todo::Todo, BuildDatabaseService};
 
 #[derive(Debug, Deserialize)]
 pub struct ListOptions {

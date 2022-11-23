@@ -1,6 +1,6 @@
-use crate::{calculator, db_service::DatabaseService};
-
+use crate::calculator;
 use actix_web::{get, web, HttpResponse, Responder};
+use database_service::DatabaseService;
 
 #[get("/test2")]
 async fn test2(db_service: web::Data<DatabaseService>) -> impl Responder {

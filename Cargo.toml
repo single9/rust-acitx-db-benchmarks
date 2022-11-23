@@ -6,7 +6,8 @@ members = [
   "apps/api_diesel",
   "libs/logger",
   "libs/database",
-  "libs/database_diesel"
+  "libs/database_diesel",
+  "libs/database_service"
 ]
 
 [workspace.package]

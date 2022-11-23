@@ -1,6 +1,5 @@
 use actix_web::web;
-
-use crate::db_service::DatabaseService;
+use database_service::DatabaseService;
 
 pub async fn test_db(db_service: web::Data<DatabaseService>, num: i64) -> anyhow::Result<i64> {
     let row: (i64,) = database::sqlx::query_as("SELECT $1")

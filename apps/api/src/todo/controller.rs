@@ -1,6 +1,5 @@
-use crate::db_service::{schema::todo::Todo, service::todo::ListOptions, DatabaseService};
-
 use actix_web::{get, post, web, HttpResponse, Responder};
+use database_service::{service::todo::ListOptions, DatabaseService};
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize)]

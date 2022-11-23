@@ -244,6 +244,7 @@ dependencies = [
  "actix-web",
  "anyhow",
  "database",
+ "database_service",
  "dotenv",
  "logger",
  "serde",
@@ -569,6 +570,18 @@ dependencies = [
  "diesel",
  "dotenv",
  "r2d2",
+ "tokio",
+]
+
+[[package]]
+name = "database_service"
+version = "0.0.0"
+dependencies = [
+ "anyhow",
+ "database",
+ "logger",
+ "serde",
+ "sqlx",
  "tokio",
 ]
 
