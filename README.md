@@ -1,5 +1,11 @@
 # Rust Pratice 1
 
+## Prerequirements
+
+### Ubuntu
+
+    sudo apt-get install libpq-dev
+
 ## Usage
 
 ### Database

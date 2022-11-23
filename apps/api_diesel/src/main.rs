@@ -1,5 +1,3 @@
-mod calculator;
-mod db_service;
 mod test_api;
 mod todo;
 
@@ -9,9 +7,8 @@ use dotenv::dotenv;
 use std::env;
 
 use database_diesel::DatabaseConnection;
+use database_diesel_service::DatabaseService;
 use logger::log::info;
-
-use crate::db_service::DatabaseService;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -35,8 +32,7 @@ async fn main() -> anyhow::Result<()> {
             .wrap(Logger::new("%a %{User-Agent}i"))
             .service(
                 web::scope("/api")
-                    // .service(test_api::init())
-                    // .service(calculator::init())
+                    .service(test_api::init())
                     .service(todo::init()),
             )
     })

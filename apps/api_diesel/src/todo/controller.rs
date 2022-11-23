@@ -1,6 +1,5 @@
-use crate::db_service::{service::todo::ListOptions, DatabaseService};
-
 use actix_web::{get, post, web, HttpResponse, Responder};
+use database_diesel_service::{service::todo::ListOptions, DatabaseService};
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize)]

@@ -260,6 +260,7 @@ dependencies = [
  "anyhow",
  "chrono",
  "database_diesel",
+ "database_diesel_service",
  "diesel",
  "dotenv",
  "logger",
@@ -571,6 +572,20 @@ dependencies = [
  "dotenv",
  "r2d2",
  "tokio",
+]
+
+[[package]]
+name = "database_diesel_service"
+version = "0.0.0"
+dependencies = [
+ "anyhow",
+ "chrono",
+ "database_diesel",
+ "diesel",
+ "logger",
+ "serde",
+ "tokio",
+ "uuid",
 ]
 
 [[package]]

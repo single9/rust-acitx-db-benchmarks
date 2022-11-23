@@ -1,4 +1,4 @@
-use super::schema::todo;
+use crate::schema::todo;
 use chrono::{DateTime, Utc};
 use diesel::prelude::*;
 use serde::{Deserialize, Serialize};

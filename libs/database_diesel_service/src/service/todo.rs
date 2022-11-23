@@ -1,5 +1,5 @@
-use crate::db_service::{
-    models::{self, NewTodo, Todo},
+use crate::{
+    models::todo::{NewTodo, Todo},
     BuildDatabaseService,
 };
 use database_diesel::PgPool;
@@ -46,8 +46,8 @@ impl BuildDatabaseService for TodoService {
 }
 
 impl TodoService {
-    pub async fn create(&self, todo_title: &str) -> anyhow::Result<models::Todo> {
-        use crate::db_service::schema::todo;
+    pub async fn create(&self, todo_title: &str) -> Result<Todo, DbError> {
+        use crate::schema::todo;
 
         let new_todo = NewTodo {
             title: todo_title.to_string(),
@@ -69,7 +69,7 @@ impl TodoService {
     where
         T: Into<Option<ListOptions>>,
     {
-        use crate::db_service::schema::todo::dsl::*;
+        use crate::schema::todo::dsl::*;
 
         let opts: ListOptions = opts.into().unwrap_or(ListOptions::default());
         let limit = opts.per_page.unwrap();
