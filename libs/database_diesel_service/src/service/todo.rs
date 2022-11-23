@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use crate::{
     models::todo::{NewTodo, Todo},
     BuildDatabaseService,
@@ -5,8 +7,6 @@ use crate::{
 use database_diesel::PgPool;
 use diesel::prelude::*;
 use serde::Deserialize;
-
-type DbError = Box<dyn std::error::Error + Send + Sync>;
 
 #[derive(Debug, Deserialize)]
 pub struct ListOptions {
@@ -46,7 +46,7 @@ impl BuildDatabaseService for TodoService {
 }
 
 impl TodoService {
-    pub async fn create(&self, todo_title: &str) -> Result<Todo, DbError> {
+    pub async fn create(&self, todo_title: &str) -> Result<Todo, diesel::result::Error> {
         use crate::schema::todo;
 
         let new_todo = NewTodo {
@@ -54,18 +54,22 @@ impl TodoService {
         };
 
         let mut conn = self.pool.get().unwrap();
-        let res = diesel::insert_into(todo::table)
+
+        diesel::insert_into(todo::table)
             .values(&new_todo)
-            .get_result(&mut conn)?;
-
-        Ok(res)
+            .get_result(&mut conn)
     }
 
-    pub async fn get(&self, id: &str) -> anyhow::Result<()> {
-        Ok(())
+    pub async fn get(&self, todo_id: &str) -> Result<Todo, diesel::result::Error> {
+        use crate::schema::todo::dsl::*;
+
+        let query_id = uuid::Uuid::from_str(todo_id).unwrap();
+        let mut conn = self.pool.get().unwrap();
+
+        todo.find(query_id).first::<Todo>(&mut conn)
     }
 
-    pub async fn list<T>(&self, opts: T) -> anyhow::Result<Vec<Todo>>
+    pub async fn list<T>(&self, opts: T) -> Result<Vec<Todo>, diesel::result::Error>
     where
         T: Into<Option<ListOptions>>,
     {
@@ -75,13 +79,11 @@ impl TodoService {
         let limit = opts.per_page.unwrap();
         let offset = opts.page.unwrap() * limit;
         let mut conn = self.pool.get().unwrap();
-        let res = todo
-            .select((id, title, checked, create_time, modify_time))
+
+        todo.select((id, title, checked, create_time, modify_time))
             .order(create_time)
             .limit(limit)
             .offset(offset)
-            .load::<Todo>(&mut conn)?;
-
-        Ok(res)
+            .load::<Todo>(&mut conn)
     }
 }
