@@ -50,22 +50,34 @@ impl TodoService {
         let new_todo = NewTodo {
             title: todo_title.to_string(),
         };
+        let pool = self.pool.clone();
 
-        let mut conn = self.pool.get().unwrap();
+        tokio::task::spawn_blocking(move || {
+            let mut conn = pool.get().unwrap();
 
-        diesel::insert_into(todo::table)
-            .values(&new_todo)
-            .get_result(&mut conn)
+            diesel::insert_into(todo::table)
+                .values(&new_todo)
+                .get_result(&mut conn)
+        })
+        .await
+        .unwrap()
     }
 
     pub async fn get(&self, todo_title: &str) -> Result<Todo, diesel::result::Error> {
         use crate::schema::todo::dsl::*;
 
-        let mut conn = self.pool.get().unwrap();
+        let pool = self.pool.clone();
+        let todo_title = todo_title.to_string();
 
-        todo.filter(title.eq(todo_title.to_string()))
-            .limit(1)
-            .first::<Todo>(&mut conn)
+        tokio::task::spawn_blocking(move || {
+            let mut conn = pool.get().unwrap();
+
+            todo.filter(title.eq(todo_title))
+                .limit(1)
+                .first::<Todo>(&mut conn)
+        })
+        .await
+        .unwrap()
     }
 
     pub async fn list<T>(&self, opts: T) -> Result<Vec<Todo>, diesel::result::Error>
@@ -77,11 +89,17 @@ impl TodoService {
         let opts: ListOptions = opts.into().unwrap_or(ListOptions::default());
         let limit = opts.per_page.unwrap();
         let offset = opts.page.unwrap() * limit;
-        let mut conn = self.pool.get().unwrap();
+        let pool = self.pool.clone();
 
-        todo.select((id, title, checked, create_time, modify_time))
-            .limit(limit)
-            .offset(offset)
-            .load::<Todo>(&mut conn)
+        tokio::task::spawn_blocking(move || {
+            let mut conn = pool.get().unwrap();
+
+            todo.select((id, title, checked, create_time, modify_time))
+                .limit(limit)
+                .offset(offset)
+                .load::<Todo>(&mut conn)
+        })
+        .await
+        .unwrap()
     }
 }
