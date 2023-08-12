@@ -21,7 +21,7 @@ license = "MIT OR Apache-2.0"
 [workspace.dependencies]
 actix-web = "4"
 diesel = { version = "2.0", features = ["postgres", "r2d2", "uuid", "chrono"] }
-sqlx = { version = "0.6", features = ["postgres", "runtime-tokio-native-tls", "chrono", "uuid", "offline", "time", "json"] }
+sqlx = { version = "0.7", features = ["postgres", "runtime-tokio", "chrono", "uuid", "time", "json", "tls-native-tls"] }
 tokio = { version = "1", features = ["full"] }
 serde = { version = "1", features = ["derive"] }
 uuid = { version = "1.2", features = ["v4", "fast-rng", "macro-diagnostics", "serde"] }
