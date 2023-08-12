@@ -10,15 +10,12 @@
 
     cargo build --release
 
-## Usage
+## Setup
 
 ### Database
 
-.env
-
-```
-DATABASE_URL=postgres://postgres:postgres@localhost/todo
-```
+1. Copy `.env.sample` to `.env`.
+2. Run the command below to initialize the database
 
     sqlx database create
     sqlx migrate run
