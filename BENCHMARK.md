@@ -12,7 +12,7 @@
 
 - Ubuntu 22.04
 - Docker 20.10.21
-- Rust 1.65.0
+- Rust 1.71.1
 - PostgreSQL 14 Alpine (Official Image)
 
 ## Hello World
